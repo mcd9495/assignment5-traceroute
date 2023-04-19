@@ -118,7 +118,7 @@ def get_route(hostname):
                         ignore_index=True)
                     # print (df)
                     # Fill in end
-            except Exception as e:
+            except socket.error as e:
                 # print (e) # uncomment to view exceptions
                 continue
 
