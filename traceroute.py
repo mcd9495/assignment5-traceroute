@@ -1,4 +1,5 @@
 from socket import *
+import socket
 import os
 import sys
 import struct
@@ -47,26 +48,26 @@ def build_packet():
     # packet to be sent was made, secondly the checksum was appended to the header and
     # then finally the complete packet was sent to the destination.
 
-    checksum = 0
+    testchecksum = 0
     ID = os.getpid() & 0xFFFF
 
     # Make the header in a similar way to the ping exercise.
     # Append checksum to the header.
 
-    header = struct.pack("bbHHh", ICMP_ECHO_REQUEST, 0, checksum, ID, 1)
+    header = struct.pack("bbHHh", ICMP_ECHO_REQUEST, 0, testchecksum, ID, 1)
     data = struct.pack("d", time.time())
 
-    checksum = checksum(header + data)
+    testchecksum = checksum(header + data)
 
     # continue adding to checksum
     if sys.platform == 'darwin':
-        checksum = socket.htons(checksum) & 0xffff
+        testchecksum = socket.htons(testchecksum) & 0xffff
     else:
-        checksum = socket.htons(checksum)
+        testchecksum = socket.htons(testchecksum)
 
     # Don’t send the packet yet , just return the final packet in this function.
 
-    header = struct.pack("bbHh", ICMP_ECHO_REQUEST, 0, checksum, ID, 1)
+    header = struct.pack("bbHh", ICMP_ECHO_REQUEST, 0, testchecksum, ID, 1)
     # Fill in end
 
     # So the function ending should look like this
