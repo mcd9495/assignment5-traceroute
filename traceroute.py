@@ -151,7 +151,7 @@ def get_route(hostname):
                     # Fill in start
                     # You should update your df with the required column field responses here
                     df = df.append({'Hop Count': ttl, 'Try': tries + 1, 'IP': addr[0], 'Hostname': hostnameRouter,
-                                           'Response Code': 'destination-unreachable'}, ignore_index=True)
+                                           'Response Code': 'dest-unreachable'}, ignore_index=True)
                     # Fill in end
                 elif types == 0:
                     bytes = struct.calcsize("d")
