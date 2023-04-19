@@ -151,7 +151,7 @@ def get_route(hostname):
                     # Fill in start
                     # You should update your df with the required column field responses here
                     df = df.append({'Hop Count': ttl, 'Try': tries + 1, 'IP': addr[0], 'Hostname': hostnameRouter,
-                                           'Response Code': 'ttl-expired'}, ignore_index=True)
+                                           'Response Code': 'destination-unreachable'}, ignore_index=True)
                     # Fill in end
                 elif types == 0:
                     bytes = struct.calcsize("d")
@@ -159,14 +159,14 @@ def get_route(hostname):
                     # Fill in start
                     # You should update your dataframe with the required column field responses here
                     df = df.append({'Hop Count': ttl, 'Try': tries + 1, 'IP': addr[0], 'Hostname': hostnameRouter,
-                                           'Response Code': 'ttl-expired'}, ignore_index=True)
+                                           'Response Code': 'success'}, ignore_index=True)
                     # Fill in end
                     return df
                 else:
                     # Fill in start
                     # If there is an exception/error to your if statements, you should append that to your df here
                     df = df.append({'Hop Count': ttl, 'Try': tries + 1, 'IP': addr[0], 'Hostname': hostnameRouter,
-                                           'Response Code': 'ttl-expired'}, ignore_index=True)
+                                           'Response Code': 'unknown'}, ignore_index=True)
 
                     # Fill in end
                 break
