@@ -102,7 +102,7 @@ def get_route(hostname):
                 if whatReady[0] == []:  # Timeout
                     # Fill in start
                     # append response to your dataframe including hop #, try #, and "timeout" responses as required by the acceptance criteria
-                    resp=[[ttl, tries + 1, '*', '*','timeout']]
+                    resp=[[ttl, tries + 1, '*', '*', 'timeout']]
                     new_df = pd.DataFrame(resp, columns=['Hop Count', 'Try', 'IP', 'Hostname', 'Response Code'])
                     df = pd.concat([df, new_df], ignore_index=True)
                     '''df = df.append(
@@ -180,7 +180,7 @@ def get_route(hostname):
                 else:
                     # Fill in start
                     # If there is an exception/error to your if statements, you should append that to your df here
-                    resp = [[ttl, tries + 1, addr[0], 'hostnameRouter', 'unknown']]
+                    resp = [[ttl, tries + 1, addr[0], hostnameRouter, 'unknown']]
                     new_df = pd.DataFrame(resp, columns=['Hop Count', 'Try', 'IP', 'Hostname', 'Response Code'])
                     df = pd.concat([df, new_df], ignore_index=True)
                     '''df = df.append({'Hop Count': ttl, 'Try': tries + 1, 'IP': addr[0], 'Hostname': hostnameRouter,
