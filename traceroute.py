@@ -102,9 +102,12 @@ def get_route(hostname):
                 if whatReady[0] == []:  # Timeout
                     # Fill in start
                     # append response to your dataframe including hop #, try #, and "timeout" responses as required by the acceptance criteria
-                    df = df.append(
+                    resp=[[ttl, tries + 1, '*', '*','timeout']]
+                    new_df = pd.DataFrame(resp, columns=['Hop Count', 'Try', 'IP', 'Hostname', 'Response Code'])
+                    df = pd.concat([df, new_df], ignore_index=True)
+                    '''df = df.append(
                         {'Hop Count': ttl, 'Try': tries + 1, 'IP': '*', 'Hostname': '*', 'Response Code': 'timeout'},
-                        ignore_index=True)
+                        ignore_index=True)'''
                     # print (df)
                     # Fill in end
                 recvPacket, addr = mySocket.recvfrom(1024)
@@ -113,9 +116,12 @@ def get_route(hostname):
                 if timeLeft <= 0:
                     # Fill in start
                     # append response to your dataframe including hop #, try #, and "timeout" responses as required by the acceptance criteria
-                    df = df.append(
+                    resp = [[ttl, tries + 1, '*', '*', 'timeout']]
+                    new_df = pd.DataFrame(resp, columns=['Hop Count', 'Try', 'IP', 'Hostname', 'Response Code'])
+                    df = pd.concat([df, new_df], ignore_index=True)
+                    '''df = df.append(
                         {'Hop Count': ttl, 'Try': tries + 1, 'IP': '*', 'Hostname': '*', 'Response Code': 'timeout'},
-                        ignore_index=True)
+                        ignore_index=True)'''
                     # print (df)
                     # Fill in end
             except socket.error as e:
@@ -142,24 +148,33 @@ def get_route(hostname):
                     timeSent = struct.unpack("d", recvPacket[28:28 + bytes])[0]
                     # Fill in start
                     # You should update your dataframe with the required column field responses here
-                    df = df.append({'Hop Count': ttl, 'Try': tries + 1, 'IP': addr[0], 'Hostname': hostnameRouter,
-                                           'Response Code': 'ttl-expired'}, ignore_index=True)
+                    resp = [[ttl, tries + 1, '*', '*', 'timeout']]
+                    new_df = pd.DataFrame(resp, columns=['Hop Count', 'Try', 'IP', 'Hostname', 'Response Code'])
+                    df = pd.concat([df, new_df], ignore_index=True)
+                    '''df = df.append({'Hop Count': ttl, 'Try': tries + 1, 'IP': addr[0], 'Hostname': hostnameRouter,
+                                           'Response Code': 'ttl-expired'}, ignore_index=True)'''
                     # Fill in end
                 elif types == 3:
                     bytes = struct.calcsize("d")
                     timeSent = struct.unpack("d", recvPacket[28:28 + bytes])[0]
                     # Fill in start
                     # You should update your df with the required column field responses here
-                    df = df.append({'Hop Count': ttl, 'Try': tries + 1, 'IP': addr[0], 'Hostname': hostnameRouter,
-                                           'Response Code': 'destination-unreachable'}, ignore_index=True)
+                    resp = [[ttl, tries + 1, '*', '*', 'timeout']]
+                    new_df = pd.DataFrame(resp, columns=['Hop Count', 'Try', 'IP', 'Hostname', 'Response Code'])
+                    df = pd.concat([df, new_df], ignore_index=True)
+                    '''df = df.append({'Hop Count': ttl, 'Try': tries + 1, 'IP': addr[0], 'Hostname': hostnameRouter,
+                                           'Response Code': 'destination-unreachable'}, ignore_index=True)'''
                     # Fill in end
                 elif types == 0:
                     bytes = struct.calcsize("d")
                     timeSent = struct.unpack("d", recvPacket[28:28 + bytes])[0]
                     # Fill in start
                     # You should update your dataframe with the required column field responses here
-                    df = df.append({'Hop Count': ttl, 'Try': tries + 1, 'IP': addr[0], 'Hostname': hostnameRouter,
-                                           'Response Code': 'success'}, ignore_index=True)
+                    resp = [[ttl, tries + 1, '*', '*', 'timeout']]
+                    new_df = pd.DataFrame(resp, columns=['Hop Count', 'Try', 'IP', 'Hostname', 'Response Code'])
+                    df = pd.concat([df, new_df], ignore_index=True)
+                    '''df = df.append({'Hop Count': ttl, 'Try': tries + 1, 'IP': addr[0], 'Hostname': hostnameRouter,
+                                           'Response Code': 'success'}, ignore_index=True)'''
                     # Fill in end
                     return df
                 else:
