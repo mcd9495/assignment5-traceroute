@@ -13,7 +13,6 @@ MAX_HOPS = 60
 TIMEOUT = 2.0
 TRIES = 1
 
-
 # The packet that we shall send to each router along the path is the ICMP echo
 # request packet, which is exactly what we had used in the ICMP ping exercise.
 # We shall use the same packet that we built in the Ping exercise
@@ -86,7 +85,8 @@ def get_route(hostname):
 
             # Fill in start
             # Make a raw socket named mySocket
-            mySocket = socket.socket(socket.AF_INET, socket.SOCK_RAW, socket.IPPROTO_ICMP)
+            icmp = getprotobyname("icmp")
+            mySocket = socket(AF_INET, SOCK_DGRAM, icmp)
 
             # Fill in end
 
@@ -136,7 +136,8 @@ def get_route(hostname):
                 # Fill in end
                 try:  # try to fetch the hostname of the router that returned the packet - don't confuse with the hostname that you are tracing
                     # Fill in start
-                    hostnameRouter = socket.gethostbyaddr(addr[0])[0]
+                    addr = addr[0]
+                    hostnameRouter = gethostbyaddr(addr)[0]
                     # Fill in end
                 except herror:  # if the router host does not provide a hostname use "hostname not returnable"
                     # Fill in start
@@ -148,7 +149,7 @@ def get_route(hostname):
                     timeSent = struct.unpack("d", recvPacket[28:28 + bytes])[0]
                     # Fill in start
                     # You should update your dataframe with the required column field responses here
-                    resp = [[ttl, tries + 1, addr[0], hostnameRouter, 'ttl-expired']]
+                    resp = [[ttl, tries + 1, addr, hostnameRouter, 'ttl exceeded']]
                     new_df = pd.DataFrame(resp, columns=['Hop Count', 'Try', 'IP', 'Hostname', 'Response Code'])
                     df = pd.concat([df, new_df], ignore_index=True)
                     '''df = df.append({'Hop Count': ttl, 'Try': tries + 1, 'IP': addr[0], 'Hostname': hostnameRouter,
@@ -159,7 +160,7 @@ def get_route(hostname):
                     timeSent = struct.unpack("d", recvPacket[28:28 + bytes])[0]
                     # Fill in start
                     # You should update your df with the required column field responses here
-                    resp = [[ttl, tries + 1, addr[0], hostnameRouter, 'destination-unreachable']]
+                    resp = [[ttl, tries + 1, addr, hostnameRouter, 'destination unreachable']]
                     new_df = pd.DataFrame(resp, columns=['Hop Count', 'Try', 'IP', 'Hostname', 'Response Code'])
                     df = pd.concat([df, new_df], ignore_index=True)
                     '''df = df.append({'Hop Count': ttl, 'Try': tries + 1, 'IP': addr[0], 'Hostname': hostnameRouter,
@@ -170,7 +171,7 @@ def get_route(hostname):
                     timeSent = struct.unpack("d", recvPacket[28:28 + bytes])[0]
                     # Fill in start
                     # You should update your dataframe with the required column field responses here
-                    resp = [[ttl, tries + 1, addr[0], hostnameRouter, 'success']]
+                    resp = [[ttl, tries + 1, addr, hostnameRouter, 'success']]
                     new_df = pd.DataFrame(resp, columns=['Hop Count', 'Try', 'IP', 'Hostname', 'Response Code'])
                     df = pd.concat([df, new_df], ignore_index=True)
                     '''df = df.append({'Hop Count': ttl, 'Try': tries + 1, 'IP': addr[0], 'Hostname': hostnameRouter,
@@ -180,7 +181,7 @@ def get_route(hostname):
                 else:
                     # Fill in start
                     # If there is an exception/error to your if statements, you should append that to your df here
-                    resp = [[ttl, tries + 1, addr[0], hostnameRouter, 'unknown']]
+                    resp = [[ttl, tries + 1, addr, hostnameRouter, 'error']]
                     new_df = pd.DataFrame(resp, columns=['Hop Count', 'Try', 'IP', 'Hostname', 'Response Code'])
                     df = pd.concat([df, new_df], ignore_index=True)
                     '''df = df.append({'Hop Count': ttl, 'Try': tries + 1, 'IP': addr[0], 'Hostname': hostnameRouter,
